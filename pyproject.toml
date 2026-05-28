@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "chartspeak"
+version = "0.1.0"
+description = "Generate charts from a polars DataFrame and a natural-language prompt."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = [
+    "polars",
+    "pydantic>=2",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+ollama = ["ollama"]
+llamacpp = ["llama-cpp-python"]
+api = ["litellm"]
+plotly = ["plotly"]
+all = ["ollama", "llama-cpp-python", "litellm", "plotly"]
+dev = ["pytest", "pytest-cov", "ruff", "mypy"]
+
+[project.scripts]
+chartspeak = "chartspeak.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["chartspeak"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=chartspeak --cov-report=term-missing"
